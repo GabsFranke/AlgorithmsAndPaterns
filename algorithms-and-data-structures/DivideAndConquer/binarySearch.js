@@ -16,8 +16,7 @@
 // }
 
 // Optimized solution: Binary search
-// Time complexity: Log(N)
-
+// Time complexity: O(log ) or O(1)
 function search(arr, n) {
   let min = 0;
   let max = arr.length - 1;
@@ -25,13 +24,9 @@ function search(arr, n) {
   while (min <= max) {
     let middle = Math.floor((min + max) / 2);
     // currentElement = arr[middle]
-    if (array[middle] < n) {
-      min = middle + 1;
-    } else if (array[middle] > n) {
-      max = middle - 1;
-    } else {
-      return middle;
-    }
+    if (array[middle] < n) min = middle + 1;
+    else if (array[middle] > n) max = middle - 1;
+    else return middle;
   }
 
   return -1;
