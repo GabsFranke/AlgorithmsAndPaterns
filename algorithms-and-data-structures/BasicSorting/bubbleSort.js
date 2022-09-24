@@ -1,9 +1,3 @@
-function swap(arr, idx1, idx2) {
-  let temp = arr[idx1];
-  arr[idx1] = arr[idx2];
-  arr[idx2] = temp;
-}
-
 //Time complexity: O(n^2)
 function bubbleSort(arr) {
   let noSwaps;
@@ -18,3 +12,8 @@ function bubbleSort(arr) {
   return arr;
 }
 
+function swap(arr, idx1, idx2) {
+  let temp = arr[idx1];
+  arr[idx1] = arr[idx2];
+  arr[idx2] = temp;
+}
