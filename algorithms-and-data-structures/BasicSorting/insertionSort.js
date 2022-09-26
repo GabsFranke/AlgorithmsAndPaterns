@@ -1,5 +1,6 @@
 // This algorithm works well in a situation where data is coming in live or streaming
 // Time complexity: O(n^2)
+// Space complexity: O(1)
 function insertionSort(arr) {
   let currentVal;
   for (let i = 1; i < arr.length; i++) {

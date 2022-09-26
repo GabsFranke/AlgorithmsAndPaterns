@@ -1,4 +1,5 @@
-//Time complexity: O(n^2)
+// Time complexity: O(n^2)
+// Space complexity: O(1)
 function bubbleSort(arr) {
   let noSwaps;
   for (let i = arr.length; i > 0; i--) {
