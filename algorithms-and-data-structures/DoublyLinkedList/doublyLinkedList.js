@@ -1,6 +1,6 @@
 const Node = require("./node");
 
-class SinlgyLinkedList {
+class DoublyLinkedList {
   constructor() {
     this.head = null;
     this.tail = null;
@@ -13,39 +13,41 @@ class SinlgyLinkedList {
       this.tail = this.head;
     } else {
       this.tail.next = newNode;
+      newNode.prev = this.tail;
       this.tail = newNode;
     }
-    this.length += 1;
+    this.length++;
     return this;
   }
 
   pop() {
     if (!this.head) return undefined;
-    let current = this.head;
-    let temp = current;
-    while (current.next) {
-      temp = current;
-      current = current.next;
-    }
-    this.tail = temp;
-    this.tail.next = null;
-    this.length--;
-    if (this.length === 0) {
+    let oldTail = this.tail;
+    if (this.length === 1) {
       this.head = null;
       this.tail = null;
+    } else {
+      this.tail = oldTail.prev;
+      this.tail.next = null;
+      oldTail.prev = null;
     }
-    return current;
+    this.length--;
+    return oldTail;
   }
 
   shift() {
     if (!this.head) return undefined;
-    let current = this.head;
-    this.head = current.next;
-    this.length--;
-    if (this.length === 0) {
+    let oldHead = this.head;
+    if (this.length === 1) {
+      this.head = null;
       this.tail = null;
+    } else {
+      this.head = oldHead.next;
+      this.head.prev = null;
+      oldHead.next = null;
     }
-    return current;
+    this.length--;
+    return oldHead;
   }
 
   unshift(val) {
@@ -54,6 +56,7 @@ class SinlgyLinkedList {
       this.head = newNode;
       this.tail = newNode;
     } else {
+      this.head.prev = newNode;
       newNode.next = this.head;
       this.head = newNode;
     }
@@ -63,13 +66,24 @@ class SinlgyLinkedList {
 
   get(i) {
     if (i < 0 || i >= this.length) return null;
-    let count = 0;
-    let current = this.head;
-    while (i !== count) {
-      current = current.next;
-      count++;
+    let mid = Math.floor(this.length / 2);
+    if (i <= mid) {
+      let current = this.head;
+      let count = 0;
+      while (i !== count) {
+        current = current.next;
+        count++;
+      }
+      return current;
+    } else {
+      let current = this.tail;
+      let count = this.length - 1;
+      while (i !== count) {
+        current = current.prev;
+        count--;
+      }
+      return current;
     }
-    return current;
   }
 
   set(i, val) {
@@ -83,10 +97,15 @@ class SinlgyLinkedList {
     if (i < 0 || i > this.length) return false;
     if (i === this.length) return !!this.push(val);
     if (i === 0) return !!this.unshift(val);
+
     let newNode = new Node(val);
     let prevNode = this.get(i - 1);
-    newNode.next = prevNode.next;
+    let nextNode = prevNode.next;
+
+    newNode.next = nextNode;
+    newNode.prev = prevNode;
     prevNode.next = newNode;
+    nextNode.prev = newNode;
     this.length++;
     return true;
   }
@@ -95,10 +114,15 @@ class SinlgyLinkedList {
     if (i < 0 || i >= this.length) return null;
     if (i === this.length - 1) return this.pop();
     if (i === 0) return this.shift();
-    let prev = this.get(i - 1);
-    let removed = prev.next;
-    prev.next = removed.next;
+
+    let removed = this.get(i);
+    let nextN = removed.next;
+    let prevN = removed.prev;
+
+    prevN.next = nextN;
+    nextN.prev = prevN;
     removed.next = null;
+    removed.prev = null;
     this.length--;
     return removed;
   }
@@ -115,6 +139,7 @@ class SinlgyLinkedList {
     for (let i = 0; i < this.length; i++) {
       next = current.next;
       current.next = prev;
+      current.prev = next;
       prev = current;
       current = next;
     }
